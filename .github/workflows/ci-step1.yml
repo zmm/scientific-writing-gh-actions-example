@@ -103,3 +103,10 @@ jobs:
           
           echo "${{ steps.check_folders.outputs.folder_count }}"
           echo "${{ steps.check_files.outputs.files_exists }}"
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: 7304_Nguyen_Q_H/relevance.md
+      - name: Echo package.json
+        run: echo ${{ steps.package.outputs.content }}
