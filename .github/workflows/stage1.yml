@@ -171,9 +171,11 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            **Автоматическая проверка**
-            Работает только с одним каталогом: ${{ steps.prepare_message.outputs.single_folder }}
-            Присутствуют все необходимые файлы: 
+            ## Автоматическая проверка
+            
+            1. Работает только с одним каталогом: ${{ steps.prepare_message.outputs.single_folder }}
+            
+            2. Присутствуют все необходимые файлы: 
             
             - goal.md: ${{ steps.prepare_message.outputs.file_goal }}
             - problem.md: ${{ steps.prepare_message.outputs.file_problem }}
@@ -182,7 +184,7 @@ jobs:
             - research_subject.md: ${{ steps.prepare_message.outputs.file_research_subject }}
             - tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
             
-            Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }} 
+            3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }} 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
