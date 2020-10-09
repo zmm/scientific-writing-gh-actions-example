@@ -189,7 +189,9 @@ jobs:
           echo "${message}"
       - uses: mshick/add-pr-comment@v1
         with:
-          message: "${{ steps.prepare_message.outputs.message }}"
+          message: |
+            **Automatic checkpoint**
+            Работает только с одним каталогом: ${{ steps.check_folders.outputs.folder_count==1?"a":"b" }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
