@@ -105,24 +105,36 @@ jobs:
           
           echo "${{ steps.check_folders.outputs.folder_count }}"
           echo "${{ steps.check_files.outputs.files_exists }}"
-      - name: Read file relevance.md
-        id: read_relevance
-        if: steps.check_files.outputs.file_relevance == 1
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ${{ steps.check_files.outputs.file_relevance_path }}
-      - name: Echo package.json
-        run:  |
-          length=$(printf "%s" "${{ steps.read_relevance.outputs.content }}" | wc -c)
-          echo "$length"
-      - name: Read file
-        id: read_
+      - name: Read file total length
+        id: file_length
         run: |
-          total_size=0        
-          if (( ${{ steps.check_files.outputs.file_relevance }} == 1)); then
-            total_size=$(($total_size + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+          total_length=0        
+          if (( ${{ steps.check_files.outputs.file_goal }} == 1)); then
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+          fi
+          if (( ${{ steps.check_files.outputs.file_problem }} == 1)); then
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_relevance }} == 1)); then
-            total_size=$(($total_size + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
           fi
-          echo "$total_size"
+          if (( ${{ steps.check_files.outputs.file_research_object }} == 1)); then
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+          fi
+          if (( ${{ steps.check_files.outputs.file_research_subject }} == 1)); then
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+          fi
+          if (( ${{ steps.check_files.outputs.file_tasks }} == 1)); then
+            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+          fi
+          echo ::set-output name=total_length::${total_length}
+          echo "$total_length"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            **Hello**
+            🌏
+            !
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: true # This is the default
