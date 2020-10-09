@@ -110,7 +110,7 @@ jobs:
         if: steps.check_files.outputs.file_relevance == 1
         uses: juliangruber/read-file-action@v1
         with:
-          path: steps.check_files.outputs.file_relevance_path
+          path: ${{ steps.check_files.outputs.file_relevance_path }}
       - name: Echo package.json
         run:  |
           length=$(printf "%s" "${{ steps.read_relevance.outputs.content }}" | wc -c)
