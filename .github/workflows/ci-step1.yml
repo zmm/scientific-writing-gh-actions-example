@@ -178,7 +178,7 @@ jobs:
           else
             message+="❌"          
           fi          
-          message+="<br>"
+          message+="\<br\>"
           
           # message for file length check
           message+="Сумма длин файлов: ${{ steps.file_length.outputs.total_length }}"
