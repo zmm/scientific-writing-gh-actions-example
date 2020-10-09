@@ -86,7 +86,7 @@ jobs:
           echo ::set-output name=file_tasks::${file_tasks}
           
           all=0
-          if [ $file_goal && $file_problem && $file_relevance && $file_research_object && $file_research_subject && $file_tasks ]; then
+          if (( file_goal == 1 && file_problem == 1 && file_relevance == 1 && file_research_object == 1 && file_research_subject == 1 && file_tasks == 1 )); then
             all=1
           fi
           
