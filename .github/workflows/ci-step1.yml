@@ -125,8 +125,7 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
-          NL=$'\n'
-          message="**Automatic checkpoint**${NL}"
+          message="**Automatic checkpoint**\n"
           # message for folder check
           message+="Работает только с одним каталогом: "
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
@@ -192,7 +191,8 @@ jobs:
           echo ::set-output name=message::${message_final}
       - uses: mshick/add-pr-comment@v1
         with:
-          message: ${{ steps.prepare_message.outputs.message }}
+          message: |
+            ${{ steps.prepare_message.outputs.message }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
