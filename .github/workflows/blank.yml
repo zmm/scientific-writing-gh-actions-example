@@ -191,7 +191,7 @@ jobs:
         with:
           message: |
             **Automatic checkpoint**
-            Работает только с одним каталогом: ${{ steps.check_folders.outputs.folder_count==1?"a":"b" }}
+            Работает только с одним каталогом: ${{ steps.check_folders.outputs.folder_count }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
