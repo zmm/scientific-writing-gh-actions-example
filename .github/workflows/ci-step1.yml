@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Step 1
+name: Stage 1
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -125,7 +125,7 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
-          message="**Automatic checkpoint**\n"
+          message="**Automatic checkpoint**\\"
           # message for folder check
           message+="Работает только с одним каталогом: "
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
@@ -133,7 +133,7 @@ jobs:
           else
             message+="❌"          
           fi     
-          message+="\n"     
+          message+="\\"     
 
           # message for file check
           message+="Присутствуют все необходимые файлы: \n"
