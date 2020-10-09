@@ -23,6 +23,7 @@ jobs:
           format: 'csv'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Printing
+        id: folder_count
         run: |
           folders=()
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
@@ -31,11 +32,11 @@ jobs:
             folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
             folders+=("$folder")
           done
-          newArr=()
+          uniqueFolders=()
           while IFS= read -r -d '' x
           do
               newArr+=("$x")
           done < <(printf "%s\0" "${folders[@]}" | sort -uz)
-          for folder in "${newArr[@]}"; do
-            printf '%s\n' "${folder}"
-          done
+          echo ${#uniqueFolders[@]}
+          echo ::set-output name=folder_count::${#uniqueFolders[@]}
+          echo ${{ steps.folder_count.outputs.folder_count }}
