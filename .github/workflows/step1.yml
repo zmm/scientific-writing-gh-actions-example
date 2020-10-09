@@ -31,6 +31,11 @@ jobs:
             folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
             folders+=("$folder")
           done
-          for folder in "${folders[@]}"; do
+          newArr=()
+          while IFS= read -r -d '' x
+          do
+              newArr+=("$x")
+          done < <(printf "%s\0" "${folders[@]}" | sort -uz)
+          for folder in "${newArr[@]}"; do
             printf '%s\n' "${folder}"
           done
