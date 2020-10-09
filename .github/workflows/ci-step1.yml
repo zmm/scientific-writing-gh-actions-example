@@ -18,7 +18,7 @@ jobs:
         id: files
         with:
           format: 'csv'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          topath ${{ secrets.GITHUB_TOKEN }}
       - name: FolderCount
         id: check_folders
         run: |
@@ -78,6 +78,8 @@ jobs:
             fi
           done
           
+          echo ::set-output name=file_relevance_path::${file_relevance_path}
+          
           echo ::set-output name=file_goal::${file_goal}
           echo ::set-output name=file_problem::${file_problem}
           echo ::set-output name=file_relevance::${file_relevance}
@@ -103,12 +105,12 @@ jobs:
           
           echo "${{ steps.check_folders.outputs.folder_count }}"
           echo "${{ steps.check_files.outputs.files_exists }}"
-#      - name: Read file relevance.md
-#        id: read_relevance
-#        if: ${{ steps.check_files.outputs.file_relevance }}
-#        uses: juliangruber/read-file-action@v1
-#        with:
-#          path: 7304_Nguyen_Q_H/relevance.md
+      - name: Read file relevance.md
+        id: read_relevance
+        if: ${{ steps.check_files.outputs.file_relevance }}
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ${{ steps.check_files.outputs.file_relevance_path }}/relevance.md
       - name: Echo package.json
         run:  |
           length=$(printf "%s" "${{ steps.read_relevance.outputs.content }}" | wc -c)
