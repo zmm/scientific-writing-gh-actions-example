@@ -178,7 +178,7 @@ jobs:
           else
             message+="❌"          
           fi          
-          message+="\n"
+          message+="<br>"
           
           # message for file length check
           message+="Сумма длин файлов: ${{ steps.file_length.outputs.total_length }}"
@@ -191,8 +191,7 @@ jobs:
           echo ::set-output name=message::${message_final}
       - uses: mshick/add-pr-comment@v1
         with:
-          message: |
-            ${{ steps.prepare_message.outputs.message }}
+          message: ${{ steps.prepare_message.outputs.message }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
