@@ -178,7 +178,7 @@ jobs:
       - name: Sending to external service for further checking
         run: echo "Placeholder for sending to checking service"
       - name: Approve pull request
-        if: ${{ steps.prepare_message.outputs.file_tasks == 1 }}
+        if: ${{ steps.prepare_message.outputs.requirement_met == 1 }}
         uses: andrewmusgrave/automatic-pull-request-review@0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
@@ -199,7 +199,7 @@ jobs:
             
             3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }}
       - name: Request changes
-        if: ${{ steps.prepare_message.outputs.file_tasks != 1 }}
+        if: ${{ steps.prepare_message.outputs.requirement_met != 1 }}
         uses: andrewmusgrave/automatic-pull-request-review@0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
