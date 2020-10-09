@@ -187,8 +187,8 @@ jobs:
           else
             message+="❌"          
           fi          
-          message_final=$(printf "$message")
-          echo ::set-output name=message::${message_final}
+          # message_final=$(printf "$message")
+          echo ::set-output name=message::${message}
       - uses: mshick/add-pr-comment@v1
         with:
           message: ${{ steps.prepare_message.outputs.message }}
