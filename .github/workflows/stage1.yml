@@ -124,75 +124,63 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
-          message="**Automatic checkpoint**\\  "
-          # message for folder check
-          message+="Работает только с одним каталогом: "
+          # single folder check
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
-            message+="✔"
+            echo ::set-output name=single_folder::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=single_folder::"❌"
           fi     
-          message+="\\"     
-          # message for file check
-          message+="Присутствуют все необходимые файлы: <br\\>"
-          message+="\t\tgoal.md: "
+          # file check
           if (( ${{ steps.check_files.outputs.file_goal }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_goal::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_goal::"❌"          
           fi          
-          message+="\n"
-          message+="\t\tproblem.md: "
           if (( ${{ steps.check_files.outputs.file_problem }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_problem::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_problem::"❌"          
           fi          
-          message+="\n"
-          message+="\t\trelevance.md: "
           if (( ${{ steps.check_files.outputs.file_relevance }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_relevance::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_relevance::"❌"          
           fi          
-          message+="\n"
-          message+="\t\tresearch_object.md: "
           if (( ${{ steps.check_files.outputs.file_research_object }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_research_object::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_research_object::"❌"          
           fi          
-          message+="\n"
-          message+="\t\tresearch_subject.md: "
           if (( ${{ steps.check_files.outputs.file_research_subject }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_research_subject::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_research_subject::"❌"          
           fi          
-          message+="\n"
-          message+="\t\tasks.md: "
           if (( ${{ steps.check_files.outputs.file_tasks }} == 1)); then
-            message+="✔"
+            echo ::set-output name=file_tasks::"✔"
           else
-            message+="❌"          
+            echo ::set-output name=file_tasks::"❌"          
           fi          
-          message+="\n"
           
           # message for file length check
-          message+="Сумма длин файлов: ${{ steps.file_length.outputs.total_length }}"
           if (( ${{ steps.file_length.outputs.total_length }} >= 300)); then
-            message+="✔"
+            echo ::set-output name=total_length::"✔"
           else
-            message+="❌"          
-          fi          
-          echo ::set-output name=message::${message}
-          echo "${message}"
+            echo ::set-output name=total_length::"❌"          
+          fi
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            **Automatic checkpoint**
-            Работает только с одним каталогом: 
-            ${{ steps.check_folders.outputs.folder_count }}
+            **Автоматическая проверка**
+            Работает только с одним каталогом: ${{ steps.prepare_message.outputs.single_folder }}
+            Присутствуют все необходимые файлы: 
+              goal.md: ${{ steps.prepare_message.outputs.file_goal }}
+              problem.md: ${{ steps.prepare_message.outputs.file_problem }}
+              relevance.md: ${{ steps.prepare_message.outputs.file_relevance }}
+              research_object.md: ${{ steps.prepare_message.outputs.file_research_object }}
+              research_subject.md: ${{ steps.prepare_message.outputs.file_research_subject }}
+              tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
+            Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }} 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
