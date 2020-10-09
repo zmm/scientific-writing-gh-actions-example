@@ -109,4 +109,6 @@ jobs:
         with:
           path: 7304_Nguyen_Q_H/relevance.md
       - name: Echo package.json
-        run: echo ${{ steps.package.outputs.content }}
+        run:  |
+          length=$(printf "%s" "${{ steps.package.outputs.content }}" | wc -c)
+          echo "$length"
