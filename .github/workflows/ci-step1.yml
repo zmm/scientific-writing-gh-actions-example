@@ -187,6 +187,7 @@ jobs:
           else
             message+="❌"          
           fi          
+          message=$(printf "$message")
           echo ::set-output name=message::${message}
       - uses: mshick/add-pr-comment@v1
         with:
