@@ -115,3 +115,9 @@ jobs:
         run:  |
           length=$(printf "%s" "${{ steps.read_relevance.outputs.content }}" | wc -c)
           echo "$length"
+      - name: Read file
+        id: read_
+        if: steps.check_files.outputs.file_relevance == 1
+        run: |        
+          size=$(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))
+          echo "$size"
