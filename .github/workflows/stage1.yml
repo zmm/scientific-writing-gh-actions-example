@@ -175,9 +175,15 @@ jobs:
             requirement_met=0
           fi
           echo ::set-output name=requirement_met::${requirement_met}    
-      - uses: mshick/add-pr-comment@v1
+      - name: Sending to external service for further checking
+        run: echo "Placeholder for sending to checking service"
+      - name: Approve pull request
+        if: ${{ steps.prepare_message.outputs.file_tasks == 1 }}
+        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
         with:
-          message: |
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          event: APPROVE
+          body: |
             ## Автоматическая проверка
             
             1. Работает только с одним каталогом: ${{ steps.prepare_message.outputs.single_folder }}
@@ -191,21 +197,25 @@ jobs:
             - research_subject.md: ${{ steps.prepare_message.outputs.file_research_subject }}
             - tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
             
-            3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }} 
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
-          allow-repeats: true # This is the default
-      - name: Sending to external service for further checking
-        run: echo "Placeholder for sending to checking service"
-      - name: Approve pull request
-        if: ${{ steps.prepare_message.outputs.file_tasks == 1 }}
-        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          event: APPROVE
+            3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }}
       - name: Request changes
         if: ${{ steps.prepare_message.outputs.file_tasks != 1 }}
         uses: andrewmusgrave/automatic-pull-request-review@0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           event: REQUEST_CHANGES
+          body: |
+            ## Автоматическая проверка
+            
+            1. Работает только с одним каталогом: ${{ steps.prepare_message.outputs.single_folder }}
+            
+            2. Присутствуют все необходимые файлы: 
+            
+            - goal.md: ${{ steps.prepare_message.outputs.file_goal }}
+            - problem.md: ${{ steps.prepare_message.outputs.file_problem }}
+            - relevance.md: ${{ steps.prepare_message.outputs.file_relevance }}
+            - research_object.md: ${{ steps.prepare_message.outputs.file_research_object }}
+            - research_subject.md: ${{ steps.prepare_message.outputs.file_research_subject }}
+            - tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
+            
+            3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }}
