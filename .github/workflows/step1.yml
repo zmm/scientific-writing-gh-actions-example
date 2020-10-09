@@ -35,7 +35,7 @@ jobs:
           uniqueFolders=()
           while IFS= read -r -d '' x
           do
-              newArr+=("$x")
+              uniqueFolders+=("$x")
           done < <(printf "%s\0" "${folders[@]}" | sort -uz)
           echo ${#uniqueFolders[@]}
           echo ::set-output name=folder_count::${#uniqueFolders[@]}
