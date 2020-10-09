@@ -42,18 +42,58 @@ jobs:
         run: |
           echo "${{ steps.check_folders.outputs.folder_name }}"
           file_goal_path="${{ steps.check_folders.outputs.folder_name }}/problem.md"
-          echo "^$file_goal_path$"
-          echo ::set-output name=file_goal::0
-                    
+          file_problem_path="${{ steps.check_folders.outputs.folder_name }}/problem.md"
+          file_relevance_path="${{ steps.check_folders.outputs.folder_name }}/relevance.md"
+          file_research_object_path="${{ steps.check_folders.outputs.folder_name }}/research_object.md"
+          file_research_subject_path="${{ steps.check_folders.outputs.folder_name }}/research_subject.md"
+          file_tasks_path="${{ steps.check_folders.outputs.folder_name }}/tasks.md"
+
+          file_goal=0
+          file_problem=0
+          file_relevance=0
+          file_research_object=0
+          file_research_subject=0
+          file_tasks=0
+          
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for added_modified_file in "${added_modified_files[@]}"; do
             echo "Do something with this ${added_modified_file}."
             if [ "${added_modified_file}" = "${file_goal_path}" ]; then
-              echo ::set-output name=file_goal::1
+              file_goal=1
+            fi
+            if [ "${added_modified_file}" = "${file_problem_path}" ]; then
+              file_problem=1
+            fi
+            if [ "${added_modified_file}" = "${file_relevance_path}" ]; then
+              file_relevance=1
+            fi
+            if [ "${added_modified_file}" = "${file_research_object_path}" ]; then
+              file_research_object=1
+            fi
+            if [ "${added_modified_file}" = "${file_research_subject_path}" ]; then
+              file_research_subject=1
+            fi
+            if [ "${added_modified_file}" = "${file_tasks_path}" ]; then
+              file_tasks=1
             fi
           done
+          
+          echo ::set-output name=file_goal::${file_goal}
+          echo ::set-output name= file_problem ::${file_problem}
+          echo ::set-output name= file_relevance ::${file_relevance}
+          echo ::set-output name= file_research_object ::${file_research_object}
+          echo ::set-output name= file_research_subject ::${file_research_subject}
+          echo ::set-output name= file_tasks ::${file_tasks}
+          echo ::set-output name=all::$( $file_goal && $file_problem && $file_relevance && $file_research_object && $file_research_subject && $file_tasks )
       - name: Printing
         run: |
           echo "${{ steps.check_files.outputs.file_goal }}"          
+          echo "${{ steps.check_files.outputs.file_problem }}"
+          echo "${{ steps.check_files.outputs.file_relevance }}"
+          echo "${{ steps.check_files.outputs.file_research_object }}"
+          echo "${{ steps.check_files.outputs.file_research_subject }}"
+          echo "${{ steps.check_files.outputs.file_tasks }}"
+          echo "${{ steps.check_files.outputs.all }}"
+          
           echo "${{ steps.check_folders.outputs.folder_count }}"
           echo "${{ steps.check_files.outputs.files_exists }}"
