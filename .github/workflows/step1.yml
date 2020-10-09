@@ -23,7 +23,7 @@ jobs:
           format: 'csv'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: FolderCount
-        id: folder_count
+        id: check_folders
         run: |
           folders=()
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
@@ -39,6 +39,14 @@ jobs:
           done < <(printf "%s\0" "${folders[@]}" | sort -uz)
           echo "${#uniqueFolders[@]}"
           echo ::set-output name=folder_count::${#uniqueFolders[@]}
+          echo ::set-output name=folder_name::${uniqueFolders[0]}
+      - name: Check file existence
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: steps.check_folders.outputs.folder_name+"/goal.md"+", "+steps.check_folders.outputs.folder_name+"/problem.md"+", "+steps.check_folders.outputs.folder_name+"/relevance.md"+", "+steps.check_folders.outputs.folder_name+"/research_object.md"+", "+steps.check_folders.outputs.folder_name+"/research_subject.md"+", "+steps.check_folders.outputs.folder_name+"/tasks.md"
+          allow_failure: true
       - name: Printing
         run: |
-          echo "${{ steps.folder_count.outputs.folder_count }}"
+          echo "${{ steps.check_folders.outputs.folder_count }}"
+          echo "${{ steps.check_files.outputs.files_exists }}"
