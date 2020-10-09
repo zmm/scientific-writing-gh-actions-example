@@ -37,11 +37,12 @@ jobs:
           echo "${#uniqueFolders[@]}"
           echo ::set-output name=folder_count::${#uniqueFolders[@]}
           echo ::set-output name=folder_name::${uniqueFolders[0]}
-#      - name: Check file existence
-#        id: check_files
-#        run: |
-#          echo "${{ steps.check_folders.outputs.folder_name }}"
-#          file_goal_path="${{ steps.check_folders.outputs.name }}/problem.md"
+      - name: Check file existence
+        id: check_files
+        run: |
+          echo "${{ steps.check_folders.outputs.folder_name }}"
+          file_goal_path="${{ steps.check_folders.outputs.name }}/problem.md"
+          echo "$file_goal_path"
 #          file_goal=$(printf '%s\n' "${{ steps.files.outputs.added_modified[@] }}" | grep -P "$file_goal_path")
 #          echo "$file_goal"
       - name: Printing
