@@ -18,7 +18,7 @@ jobs:
         id: files
         with:
           format: 'csv'
-          topath ${{ secrets.GITHUB_TOKEN }}
+          topath: ${{ secrets.GITHUB_TOKEN }}
       - name: FolderCount
         id: check_folders
         run: |
@@ -107,10 +107,10 @@ jobs:
           echo "${{ steps.check_files.outputs.files_exists }}"
       - name: Read file relevance.md
         id: read_relevance
-        if: ${{ steps.check_files.outputs.file_relevance }}
+        if: steps.check_files.outputs.file_relevance == 1
         uses: juliangruber/read-file-action@v1
         with:
-          path: ${{ steps.check_files.outputs.file_relevance_path }}/relevance.md
+          path: steps.check_files.outputs.file_relevance_path
       - name: Echo package.json
         run:  |
           length=$(printf "%s" "${{ steps.read_relevance.outputs.content }}" | wc -c)
