@@ -18,7 +18,6 @@ jobs:
         id: files
         with:
           format: 'csv'
-          topath: ${{ secrets.GITHUB_TOKEN }}
       - name: FolderCount
         id: check_folders
         run: |
