@@ -190,3 +190,8 @@ jobs:
           allow-repeats: true # This is the default
       - name: Sending to external service for further checking
         run: echo "Placeholder for sending to checking service"
+      - name: Approve pull request
+        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          event: APPROVE
