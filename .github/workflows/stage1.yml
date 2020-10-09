@@ -203,3 +203,9 @@ jobs:
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           event: APPROVE
+      - name: Request changes
+        if: ${{ steps.prepare_message.outputs.file_tasks != 1 }}
+        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          event: REQUEST_CHANGES
