@@ -125,7 +125,8 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
-          message="**Automatic checkpoint**\n"
+          NL=$'\n'
+          message="**Automatic checkpoint**${NL}"
           # message for folder check
           message+="Работает только с одним каталогом: "
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
