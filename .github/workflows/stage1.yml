@@ -184,3 +184,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
           allow-repeats: true # This is the default
+      - name: Sending to external service for further checking
+        run: echo "Placeholder for sending to checking service"
