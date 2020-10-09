@@ -42,9 +42,17 @@ jobs:
         run: |
           echo "${{ steps.check_folders.outputs.folder_name }}"
           file_goal_path="${{ steps.check_folders.outputs.folder_name }}/problem.md"
-          echo "$file_goal_path"
-#          file_goal=$(printf '%s\n' "${{ steps.files.outputs.added_modified[@] }}" | grep -P "$file_goal_path")
-#          echo "$file_goal"
+          echo "^$file_goal_path$"
+          echo ::set-output name=file_goal::0
+                    
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${added_modified_files[@]}"; do
+            echo "Do something with this ${added_modified_file}."
+            if [[ "${added_modified_file}" == "${file_goal_path}"]]
+            then
+              echo ::set-output name=file_goal::1
+            fi
+          done
       - name: Printing
         run: |
           # echo "${{ steps.check_files.outputs.file_goal }}"          
