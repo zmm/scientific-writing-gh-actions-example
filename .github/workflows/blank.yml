@@ -124,7 +124,7 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
-          message="**Automatic checkpoint**\\"
+          message="**Automatic checkpoint**\\  "
           # message for folder check
           message+="Работает только с одним каталогом: "
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
@@ -134,7 +134,7 @@ jobs:
           fi     
           message+="\\"     
           # message for file check
-          message+="Присутствуют все необходимые файлы: \n"
+          message+="Присутствуют все необходимые файлы: <br\\>"
           message+="\t\tgoal.md: "
           if (( ${{ steps.check_files.outputs.file_goal }} == 1)); then
             message+="✔"
