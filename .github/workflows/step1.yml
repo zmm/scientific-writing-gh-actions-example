@@ -31,5 +31,6 @@ jobs:
             folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
             folders+=("$folder")
           done
-          printf '%s\n' "${folders[0]}"
-          printf '%s\n' "${folders}"
+          for folder in "${folders[@]}"; do
+            printf '%s\n' "${folder}"
+          done
