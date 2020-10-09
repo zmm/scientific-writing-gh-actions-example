@@ -124,13 +124,18 @@ jobs:
       - name: Preparing Message
         id: prepare_message
         run: |
+          requirement_met=1
           # single folder check
           if (( ${{ steps.check_folders.outputs.folder_count }} == 1)); then
             echo ::set-output name=single_folder::"✔"
           else
             echo ::set-output name=single_folder::"❌"
+            requirement_met=0
           fi     
           # file check
+          if (( ${{ steps.check_files.outputs.all }} != 1)); then
+            requirement_met=0
+          fi  
           if (( ${{ steps.check_files.outputs.file_goal }} == 1)); then
             echo ::set-output name=file_goal::"✔"
           else
@@ -167,7 +172,9 @@ jobs:
             echo ::set-output name=total_length::"✔"
           else
             echo ::set-output name=total_length::"❌"          
+            requirement_met=0
           fi
+          echo ::set-output name=requirement_met::${requirement_met}    
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
@@ -191,6 +198,7 @@ jobs:
       - name: Sending to external service for further checking
         run: echo "Placeholder for sending to checking service"
       - name: Approve pull request
+        if: ${{ steps.prepare_message.outputs.file_tasks == 1 }}
         uses: andrewmusgrave/automatic-pull-request-review@0.0.2
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
