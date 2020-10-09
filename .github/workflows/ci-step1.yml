@@ -79,12 +79,18 @@ jobs:
           done
           
           echo ::set-output name=file_goal::${file_goal}
-          echo ::set-output name= file_problem ::${file_problem}
-          echo ::set-output name= file_relevance ::${file_relevance}
-          echo ::set-output name= file_research_object ::${file_research_object}
-          echo ::set-output name= file_research_subject ::${file_research_subject}
-          echo ::set-output name= file_tasks ::${file_tasks}
-          echo ::set-output name=all::$( $file_goal && $file_problem && $file_relevance && $file_research_object && $file_research_subject && $file_tasks )
+          echo ::set-output name=file_problem::${file_problem}
+          echo ::set-output name=file_relevance::${file_relevance}
+          echo ::set-output name=file_research_object::${file_research_object}
+          echo ::set-output name=file_research_subject::${file_research_subject}
+          echo ::set-output name=file_tasks::${file_tasks}
+          
+          all=0
+          if [ $file_goal && $file_problem && $file_relevance && $file_research_object && $file_research_subject && $file_tasks ]; then
+            all=1
+          fi
+          
+          echo ::set-output name=all::$all
       - name: Printing
         run: |
           echo "${{ steps.check_files.outputs.file_goal }}"          
