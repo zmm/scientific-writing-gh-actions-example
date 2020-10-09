@@ -42,11 +42,29 @@ jobs:
           echo ::set-output name=folder_name::${uniqueFolders[0]}
       - name: Check file existence
         id: check_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: steps.check_folders.outputs.folder_name+"/goal.md"+", "+steps.check_folders.outputs.folder_name+"/problem.md"+", "+steps.check_folders.outputs.folder_name+"/relevance.md"+", "+steps.check_folders.outputs.folder_name+"/research_object.md"+", "+steps.check_folders.outputs.folder_name+"/research_subject.md"+", "+steps.check_folders.outputs.folder_name+"/tasks.md"
-          allow_failure: true
+        run: |
+          echo "${{ steps.check_folders.outputs.folder_name }}"
+          file_goal=$(test -f "${{ steps.check_folders.outputs.name }}\/goal.md")
+          file_problem=$(test -f "${{ steps.check_folders.outputs.name }}\/problem.md")
+          file_relevance=$(test -f "${{ steps.check_folders.outputs.name }}\/relevance.md")
+          file_research_object=$(test -f "${{ steps.check_folders.outputs.name }}\/research_object.md")
+          file_research_subject=$(test -f "${{ steps.check_folders.outputs.name }}\/research_subject.md")
+          file_tasks=$(test -f "${{ steps.check_folders.outputs.name }}\/tasks.md")
+          echo ::set-output name=file_goal::${file_goal}
+          echo ::set-output name=file_problem::${file_problem}
+          echo ::set-output name=file_relevance::${file_relevance}
+          echo ::set-output name=file_research_object::${file_research_object}
+          echo ::set-output name=file_research_subject::${file_research_subject}
+          echo ::set-output name=file_tasks::${file_tasks}
+          echo ::set-output name=all::$( $file_goal && $file_problem && $file_relevance && $file_research_object && $file_research_subject && $file_tasks )
       - name: Printing
         run: |
+          echo "${{ steps.check_files.outputs.file_goal }}"
+          echo "${{ steps.check_files.outputs.file_problem }}"
+          echo "${{ steps.check_files.outputs.file_relevance }}"
+          echo "${{ steps.check_files.outputs.file_research_object }}"
+          echo "${{ steps.check_files.outputs.file_research_subject }}"
+          echo "${{ steps.check_files.outputs.file_tasks }}"
+          
           echo "${{ steps.check_folders.outputs.folder_count }}"
           echo "${{ steps.check_files.outputs.files_exists }}"
