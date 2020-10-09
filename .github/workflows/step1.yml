@@ -28,7 +28,7 @@ jobs:
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for added_modified_file in "${added_modified_files[@]}"; do
             echo "Do something with this ${added_modified_file}."
-            folder=$(echo '${added_modified_file}' | sed 's/\/.*//')
+            folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
             folders+=("$folder")
           done
           printf '%s\n' "${folders[0]}"
