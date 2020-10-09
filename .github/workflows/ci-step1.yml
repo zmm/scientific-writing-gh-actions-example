@@ -41,7 +41,7 @@ jobs:
         id: check_files
         run: |
           echo "${{ steps.check_folders.outputs.folder_name }}"
-          file_goal_path="${{ steps.check_folders.outputs.name }}/problem.md"
+          file_goal_path="${{ steps.check_folders.outputs.folder_name }}/problem.md"
           echo "$file_goal_path"
 #          file_goal=$(printf '%s\n' "${{ steps.files.outputs.added_modified[@] }}" | grep -P "$file_goal_path")
 #          echo "$file_goal"
