@@ -22,7 +22,7 @@ jobs:
         with:
           format: 'csv'
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Printing
+      - name: FolderCount
         id: folder_count
         run: |
           folders=()
@@ -37,6 +37,8 @@ jobs:
           do
               uniqueFolders+=("$x")
           done < <(printf "%s\0" "${folders[@]}" | sort -uz)
-          echo ${#uniqueFolders[@]}
+          echo "${#uniqueFolders[@]}"
           echo ::set-output name=folder_count::${#uniqueFolders[@]}
-          echo ${{ steps.folder_count.outputs.folder_count }}
+      - name: Printing
+        run: |
+          echo "${{ steps.folder_count.outputs.folder_count }}"
