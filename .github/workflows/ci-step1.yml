@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Step 1
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  pull_request:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - uses: jitterbit/get-changed-files@v1
+        id: files
+        with:
+          format: 'csv'
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: FolderCount
+        id: check_folders
+        run: |
+          folders=()
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${added_modified_files[@]}"; do
+            echo "Do something with this ${added_modified_file}."
+            folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
+            folders+=("$folder")
+          done
+          uniqueFolders=()
+          while IFS= read -r -d '' x
+          do
+              uniqueFolders+=("$x")
+          done < <(printf "%s\0" "${folders[@]}" | sort -uz)
+          echo "${#uniqueFolders[@]}"
+          echo ::set-output name=folder_count::${#uniqueFolders[@]}
+          echo ::set-output name=folder_name::${uniqueFolders[0]}
+      - name: Check file existence
+        id: check_files
+        run: |
+          echo "${{ steps.check_folders.outputs.folder_name }}"
+          file_goal=$(printf '%s\n' "${{ steps.files.outputs.added_modified[@] }}" | grep -P '^${{ steps.check_folders.outputs.name }}/problem.md$')
+          echo "$file_goal"
+      - name: Printing
+        run: |
+          echo "${{ steps.check_files.outputs.file_goal }}"          
+          echo "${{ steps.check_folders.outputs.folder_count }}"
+          echo "${{ steps.check_files.outputs.files_exists }}"
