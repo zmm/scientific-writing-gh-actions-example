@@ -218,3 +218,10 @@ jobs:
             - tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
             
             3. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }}
+      - name: Return exit code
+        run: |
+          if (( ${{ steps.prepare_message.outputs.requirement_met }} == 1)); then
+            exit 0
+          else
+            exit 1
+          fi
