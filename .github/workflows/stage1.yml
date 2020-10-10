@@ -33,7 +33,7 @@ jobs:
           do
             if [[ "$x" != ".github" ]]; then
               uniqueFolders+=("$x")
-            if
+            fi
           done < <(printf "%s\0" "${folders[@]}" | sort -uz)
           echo "${#uniqueFolders[@]}"
           if [[ "${uniqueFolders[0]}" =~ ^[0-9]{4}_[A-Za-z_]+$ ]]; then
