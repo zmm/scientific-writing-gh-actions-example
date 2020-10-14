@@ -349,7 +349,7 @@ jobs:
       - name: Place holder
         run: |
           echo "Running checks on task 2..."
-  tasktask3:
+  task3:
     runs-on: ubuntu-latest
     needs: [check_task_number]
     if: needs.check_task_number.outputs.task_number == 3
