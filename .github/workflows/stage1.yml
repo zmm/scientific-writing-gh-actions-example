@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Get PR title
         run: |
-          echo ${{ github.event.issue }}
+          echo ${{ github.event }}
       - uses: actions-ecosystem/action-remove-labels@v1
         continue-on-error: true
         with:
