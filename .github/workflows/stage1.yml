@@ -10,8 +10,15 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  check_task_number:
     runs-on: ubuntu-latest
+    steps:
+    - name: Get PR title
+      run: |
+        echo ${{ github.event.pull_request.title }}
+  task1:
+    runs-on: ubuntu-latest
+    if: 1 == 2
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: jitterbit/get-changed-files@v1
