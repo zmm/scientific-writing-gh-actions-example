@@ -42,32 +42,32 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'task 1')
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 1
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'task 2')
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 2 
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'task 3')
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 3 
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'unknown task')
         with:
           github_token: ${{ secrets.github_token }}
-          labels: unknown task 
+          labels: unknown task
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'bot approved')
         with:
           github_token: ${{ secrets.github_token }}
           labels: bot approved
       - uses: actions-ecosystem/action-remove-labels@v1
-        continue-on-error: true
+        if: contains(github.event.pull_request.labels.*.name, 'bot changes requested')
         with:
           github_token: ${{ secrets.github_token }}
           labels: bot changes requested
