@@ -17,6 +17,9 @@ jobs:
       task_number: ${{ steps.get_task_number.outputs.task_number }}
     steps:
       - uses: actions/checkout@v2
+      - name: Get PR title
+        run: |
+          echo ${{ github.event.issue.labels }}
       - uses: actions-ecosystem/action-remove-labels@v1
         continue-on-error: true
         with:
