@@ -7,18 +7,54 @@ name: Stage 1
 on:
   pull_request:
     branches: [ main ]
+    types: [assigned, opened, synchronize, reopened, edited]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   check_task_number:
     runs-on: ubuntu-latest
+    outputs:
+      task_number: ${{ steps.get_task_number.outputs.task_number }}
     steps:
-    - name: Get PR title
-      run: |
-        echo ${{ github.event.pull_request.title }}
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: |
+            task 1
+            task 2
+            task 3
+            unknown task
+            bot approved
+            bot changes requested
+      - name: Get PR title
+        id: get_task_number
+        run: |
+          echo ${{ github.event.pull_request.title }}
+          if [[ "${{ github.event.pull_request.title }}" =~ ^[A-Za-z_]+_[1-3]$ ]]; then
+            task_number=$(echo "${{ github.event.pull_request.title }}" | sed 's/.*_//')
+            echo "Task number detected: ${task_number}"
+            echo ::set-output name=task_number::${task_number}
+          else
+            echo "Task number not detected"
+            echo ::set-output name=task_number::0
+          fi
+      - name: Add task number label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: steps.get_task_number.outputs.task_number != 0
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: task ${{ steps.get_task_number.outputs.task_number }}
+      - name: Add task number not found label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: steps.get_task_number.outputs.task_number == 0
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: unknown task
   task1:
     runs-on: ubuntu-latest
-    if: 1 == 2
+    needs: [check_task_number]
+    if: needs.check_task_number.outputs.task_number == 1
     steps:
       - uses: actions/checkout@v2.1.0
       - uses: jitterbit/get-changed-files@v1
@@ -226,6 +262,18 @@ jobs:
             - tasks.md: ${{ steps.prepare_message.outputs.file_tasks }}
             
             4. Сумма длин файлов: ${{ steps.file_length.outputs.total_length }} ${{ steps.prepare_message.outputs.total_length }}
+      - name: Add label (approved)
+        uses: actions-ecosystem/action-add-labels@v1
+        if: steps.prepare_message.outputs.requirement_met == 1
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: approved
+      - name: Add label (changes requested)
+        uses: actions-ecosystem/action-add-labels@v1
+        if: steps.prepare_message.outputs.requirement_met == 0
+        with:
+          github_token: ${{ secrets.github_token }}
+          labels: changes requested
       - name: Return exit code
         run: |
           if (( ${{ steps.prepare_message.outputs.requirement_met }} == 1)); then
