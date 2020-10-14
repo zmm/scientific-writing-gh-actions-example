@@ -18,32 +18,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'task 1')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 1
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'task 2')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 2 
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'task 3')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: task 3 
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'unknown task')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: unknown task 
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'bot approved')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: bot approved
       - uses: actions-ecosystem/action-remove-labels@v1
-        if: contains(github.event.issue.labels.*.name, 'bot changes requested')
+        continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
           labels: bot changes requested
