@@ -287,13 +287,13 @@ jobs:
         if: steps.prepare_message.outputs.requirement_met == 1
         with:
           github_token: ${{ secrets.github_token }}
-          labels: approved
+          labels: bot approved
       - name: Add label (changes requested)
         uses: actions-ecosystem/action-add-labels@v1
         if: steps.prepare_message.outputs.requirement_met == 0
         with:
           github_token: ${{ secrets.github_token }}
-          labels: changes requested
+          labels: bot changes requested
       - name: Return exit code
         run: |
           if (( ${{ steps.prepare_message.outputs.requirement_met }} == 1)); then
