@@ -125,8 +125,8 @@ jobs:
         id: check_folders
         run: |
           folders=()
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          for added_modified_file in "${added_modified_files[@]}"; do
+          mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.all }}')
+          for added_modified_file in "${modified_files[@]}"; do
             echo "Do something with this ${added_modified_file}."
             folder=$(echo "${added_modified_file}" | sed 's/\/.*//')
             folders+=("$folder")
@@ -163,8 +163,8 @@ jobs:
           file_research_subject=0
           file_tasks=0
           
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          for added_modified_file in "${added_modified_files[@]}"; do
+          mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.all }}')
+          for added_modified_file in "${modified_files[@]}"; do
             echo "Do something with this ${added_modified_file}."
             if [ "${added_modified_file}" = "${file_goal_path}" ]; then
               file_goal=1
