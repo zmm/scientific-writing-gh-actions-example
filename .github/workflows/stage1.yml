@@ -211,22 +211,22 @@ jobs:
         run: |
           total_length=0        
           if (( ${{ steps.check_files.outputs.file_goal }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_goal_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_goal_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_problem }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_problem_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_problem_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_relevance }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_relevance_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_research_object }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_research_object_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_research_object_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_research_subject }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_research_subject_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_research_subject_path }}") +0))))
           fi
           if (( ${{ steps.check_files.outputs.file_tasks }} == 1)); then
-            total_length=$(($total_length + $(($(wc -c < "${{ steps.check_files.outputs.file_tasks_path }}") +0))))
+            total_length=$(($total_length + $(($(wc -m < "${{ steps.check_files.outputs.file_tasks_path }}") +0))))
           fi
           echo ::set-output name=total_length::${total_length}
           echo "$total_length"
